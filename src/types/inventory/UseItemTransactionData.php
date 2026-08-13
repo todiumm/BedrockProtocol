@@ -1,24 +1,13 @@
 <?php
 
 /*
+ * This file is part of BedrockProtocol.
+ * Copyright (C) 2014-2022 PocketMine Team <https://github.com/pmmp/BedrockProtocol>
  *
- *      _    _ _
- *     / \  | | |_ __ _ _   _
- *    / _ \ | | __/ _` | | | |
- *   / ___ \| | || (_| | |_| |
- *  /_/   \_\_|\__\__,_|\__, |
- *                       |___/
- *
- * This program is free software: you can redistribute it and/or modify
+ * BedrockProtocol is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * Original work by the PocketMine Team.
- * https://www.pocketmine.net/
- *
- * @author Altay Team
- * @link https://github.com/altayofficial
  */
 
 declare(strict_types=1);
@@ -28,15 +17,12 @@ namespace pocketmine\network\mcpe\protocol\types\inventory;
 use pmmp\encoding\Byte;
 use pmmp\encoding\ByteBufferReader;
 use pmmp\encoding\ByteBufferWriter;
-use pmmp\encoding\DataDecodeException;
 use pmmp\encoding\VarInt;
 use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
-use pocketmine\network\mcpe\protocol\PacketDecodeException;
 use pocketmine\network\mcpe\protocol\serializer\CommonTypes;
 use pocketmine\network\mcpe\protocol\types\BlockPosition;
 use pocketmine\network\mcpe\protocol\types\GetTypeIdFromConstTrait;
-use function count;
 
 class UseItemTransactionData extends TransactionData{
 	use GetTypeIdFromConstTrait;
@@ -97,36 +83,6 @@ class UseItemTransactionData extends TransactionData{
 	public function getClientInteractPrediction() : PredictedResult{ return $this->clientInteractPrediction; }
 
 	public function getClientCooldownState() : int{ return $this->clientCooldownState; }
-
-	/**
-	 * PlayerAuthInputPacket frames this transaction differently from InventoryTransactionPacket: the action list is
-	 * optional, but the fields after it are always present.
-	 *
-	 * @throws DataDecodeException
-	 * @throws PacketDecodeException
-	 */
-	public function decodeFromItemInteraction(ByteBufferReader $in) : void{
-		$hasActions = CommonTypes::getBool($in);
-		$hasTransactionData = CommonTypes::getBool($in);
-
-		if($hasActions && $hasTransactionData){
-			$actionCount = VarInt::readUnsignedInt($in);
-			for($i = 0; $i < $actionCount; ++$i){
-				$this->actions[] = (new NetworkInventoryAction())->read($in);
-			}
-		}
-		$this->decodeData($in);
-	}
-
-	public function encodeForItemInteraction(ByteBufferWriter $out) : void{
-		CommonTypes::putBool($out, true);
-		CommonTypes::putBool($out, true);
-		VarInt::writeUnsignedInt($out, count($this->actions));
-		foreach($this->actions as $action){
-			$action->write($out);
-		}
-		$this->encodeData($out);
-	}
 
 	protected function decodeData(ByteBufferReader $in) : void{
 		$this->actionType = VarInt::readUnsignedInt($in);

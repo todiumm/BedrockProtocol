@@ -19,8 +19,6 @@ jobs:
           php-version: ${{ matrix.php }}
           ini-values: xdebug.max_nesting_level=3000
           extensions: encoding-pmmp/ext-encoding@1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Load Composer package cache
         uses: actions/cache@v4
@@ -65,6 +63,13 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction
+
+      - name: Verify ::create() methods are up to date
+        run: |
+          php tools/generate-create-static-methods.php
+          php-cs-fixer fix
+          git diff
+          git diff --quiet #to set the exit code
 
   codestyle:
     runs-on: ubuntu-latest

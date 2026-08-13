@@ -1,24 +1,13 @@
 <?php
 
 /*
+ * This file is part of BedrockProtocol.
+ * Copyright (C) 2014-2022 PocketMine Team <https://github.com/pmmp/BedrockProtocol>
  *
- *      _    _ _
- *     / \  | | |_ __ _ _   _
- *    / _ \ | | __/ _` | | | |
- *   / ___ \| | || (_| | |_| |
- *  /_/   \_\_|\__\__,_|\__, |
- *                       |___/
- *
- * This program is free software: you can redistribute it and/or modify
+ * BedrockProtocol is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * Original work by the PocketMine Team.
- * https://www.pocketmine.net/
- *
- * @author Altay Team
- * @link https://github.com/altayofficial
  */
 
 declare(strict_types=1);
@@ -50,7 +39,7 @@ final class ClientDataToSkinDataHelper{
 		"persona_dress" => PersonaSkinPiece::PIECE_TYPE_DRESS,
 		"persona_top" => PersonaSkinPiece::PIECE_TYPE_TOP,
 		"persona_high_pants" => PersonaSkinPiece::PIECE_TYPE_HIGH_PANTS,
-		"persona_hand" => PersonaSkinPiece::PIECE_TYPE_HANDS, // WHAT THE FUCK
+		"persona_hands" => PersonaSkinPiece::PIECE_TYPE_HANDS,
 		"persona_outerwear" => PersonaSkinPiece::PIECE_TYPE_OUTERWEAR,
 		"persona_facial_hair" => PersonaSkinPiece::PIECE_TYPE_FACIAL_HAIR,
 		"persona_mouth" => PersonaSkinPiece::PIECE_TYPE_MOUTH,

@@ -1,24 +1,13 @@
 <?php
 
 /*
+ * This file is part of BedrockProtocol.
+ * Copyright (C) 2014-2022 PocketMine Team <https://github.com/pmmp/BedrockProtocol>
  *
- *      _    _ _
- *     / \  | | |_ __ _ _   _
- *    / _ \ | | __/ _` | | | |
- *   / ___ \| | || (_| | |_| |
- *  /_/   \_\_|\__\__,_|\__, |
- *                       |___/
- *
- * This program is free software: you can redistribute it and/or modify
+ * BedrockProtocol is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
- * Original work by the PocketMine Team.
- * https://www.pocketmine.net/
- *
- * @author Altay Team
- * @link https://github.com/altayofficial
  */
 
 declare(strict_types=1);
@@ -36,12 +25,6 @@ use function count;
 class SetScorePacket extends DataPacket implements ClientboundPacket{
 	public const NETWORK_ID = ProtocolInfo::SET_SCORE_PACKET;
 
-	// TODO: we have duplicate of those types, this one stays for backwards compatibility
-	const TYPE_REMOVE = "remove";
-	const TYPE_PLAYER = "changeplayer";
-	const TYPE_ENTITY = "changeentity";
-	const TYPE_FAKE_PLAYER = "changefakeplayer";
-
 	private const ACTION_IDS = [
 		ScorePacketEntry::TYPE_REMOVE => "remove",
 		ScorePacketEntry::TYPE_PLAYER => "changeplayer",
@@ -58,13 +41,6 @@ class SetScorePacket extends DataPacket implements ClientboundPacket{
 	 */
 	public static function create(array $entries) : self{
 		$result = new self;
-		foreach($entries as $entry){
-			//TODO: HACK! Empty strings disconnect clients in 1.26.40
-			$entry->objectiveName = $entry->objectiveName === "" ? " " : $entry->objectiveName;
-			if($entry->type === ScorePacketEntry::TYPE_FAKE_PLAYER && $entry->customName === ""){
-				$entry->customName = " ";
-			}
-		}
 		$result->entries = $entries;
 		return $result;
 	}
